@@ -1,20 +1,13 @@
-package com.example.foodproject.Activity;
+package com.example.foodproject.Activity.Activity;
 
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodproject.Adapter.FoodListAdapter;
-import com.example.foodproject.Domain.Foods;
-import com.example.foodproject.R;
+import com.example.foodproject.Activity.Adapter.FoodListAdapter;
+import com.example.foodproject.Activity.Domain.Foods;
 import com.example.foodproject.databinding.ActivityListFoodBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

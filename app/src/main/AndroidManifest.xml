@@ -13,10 +13,10 @@
         android:theme="@style/Theme.FoodProject"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.ListFoodActivity"
+            android:name=".Activity.Activity.ListFoodActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.DetailActivity"
+            android:name=".Activity.Activity.DetailActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.Activity.MainActivity"

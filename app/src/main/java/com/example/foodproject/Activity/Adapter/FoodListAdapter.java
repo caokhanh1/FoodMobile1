@@ -1,4 +1,4 @@
-package com.example.foodproject.Adapter;
+package com.example.foodproject.Activity.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.foodproject.Activity.DetailActivity;
-import com.example.foodproject.Domain.Foods;
+import com.example.foodproject.Activity.Activity.DetailActivity;
+import com.example.foodproject.Activity.Domain.Foods;
 import com.example.foodproject.R;
 
 import java.util.ArrayList;

@@ -1,10 +1,10 @@
-package com.example.foodproject.Helper;
+package com.example.foodproject.Activity.Helper;
 
 import android.content.Context;
 import android.widget.Toast;
 
 
-import com.example.foodproject.Domain.Foods;
+import com.example.foodproject.Activity.Domain.Foods;
 
 import java.util.ArrayList;
 

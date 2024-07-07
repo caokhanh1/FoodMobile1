@@ -1,4 +1,4 @@
-package com.example.foodproject.Domain;
+package com.example.foodproject.Activity.Domain;
 
 import java.io.Serializable;
 

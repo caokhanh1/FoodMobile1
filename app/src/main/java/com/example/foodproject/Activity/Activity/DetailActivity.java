@@ -1,4 +1,4 @@
-package com.example.foodproject.Activity;
+package com.example.foodproject.Activity.Activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,8 +6,8 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.foodproject.Domain.Foods;
-import com.example.foodproject.Helper.ManagmentCart;
+import com.example.foodproject.Activity.Domain.Foods;
+import com.example.foodproject.Activity.Helper.ManagmentCart;
 import com.example.foodproject.databinding.ActivityDetailBinding;
 
 public class DetailActivity extends BaseActivity {
@@ -38,7 +38,7 @@ public class DetailActivity extends BaseActivity {
         binding.priceTxt.setText("$"+ object.getPrice());
         binding.titleTxt.setText(object.getTitle());
         binding.descriptionTxt.setText(object.getDescription());
-        binding.ratingTxt.setText(object.getStar()+" Rating");
+        binding.ratingTxt.setText(object.getStar()+" Rating");  
         binding.ratingBar.setRating((float) object.getStar());
         binding.totalTxt.setText((num*object.getPrice())+"$");
         binding.plusBtn.setOnClickListener(new View.OnClickListener() {
