@@ -1,4 +1,4 @@
-package com.example.foodproject.Activity;
+package com.example.foodproject.Activity.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,9 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.foodproject.R;
@@ -28,8 +26,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.regex.Pattern;
 
 
 public class SignupActivity extends AppCompatActivity {

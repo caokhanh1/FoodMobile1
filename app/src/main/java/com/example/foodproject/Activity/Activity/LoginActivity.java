@@ -1,4 +1,4 @@
-package com.example.foodproject.Activity;
+package com.example.foodproject.Activity.Activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -24,7 +24,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText email, pwd;
