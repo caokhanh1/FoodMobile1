@@ -1,6 +1,7 @@
 package com.example.foodproject.Activity.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.foodproject.Activity.Activity.ListFoodActivity;
 import com.example.foodproject.Activity.Domain.Category;
 import com.example.foodproject.R;
 
@@ -20,10 +22,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.viewho
     ArrayList<Category> items;
     Context context;
 
-    public CategoryAdapter(ArrayList<Category> items) {
+    public CategoryAdapter(ArrayList<Category> items){
         this.items = items;
     }
-
     @NonNull
     @Override
     public CategoryAdapter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,12 +36,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.viewho
     @Override
     public void onBindViewHolder(@NonNull CategoryAdapter.viewholder holder, int position) {
         holder.titleTxt.setText(items.get(position).getName());
-        int drawableResourceId = context.getResources().getIdentifier(items.get(position).getImagePath(),
-                "drawable",
-                holder.itemView.getContext().getPackageName());
         Glide.with(context)
                 .load(items.get(position).getImagePath())
-                .into(holder.pic);
+                .into(holder.picA);
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ListFoodActivity.class);
+            intent.putExtra("CategoryId", items.get(position).getId());
+            intent.putExtra("CategoryName", items.get(position).getName());
+            context.startActivity(intent);
+        });
 
     }
 
@@ -51,12 +55,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.viewho
 
     public class viewholder extends RecyclerView.ViewHolder {
         TextView titleTxt;
-        ImageView pic;
-
+        ImageView picA;
         public viewholder(@NonNull View itemView) {
             super(itemView);
             titleTxt = itemView.findViewById(R.id.catNameTxt);
-            pic = itemView.findViewById(R.id.imgCat);
+            picA = itemView.findViewById(R.id.imgCat);
+
         }
     }
 }
