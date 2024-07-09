@@ -3,6 +3,7 @@ package com.example.foodproject.Activity.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,5 +64,26 @@ public class CartActivity extends BaseActivity {
 
     private void setVariable() {
         binding.backBtn.setOnClickListener(v -> startActivity(new Intent(CartActivity.this, MainActivity.class)));
+        binding.checkOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCheckout();
+                Intent intent = new Intent(CartActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+    }
+
+    private void onCheckout() {
+        Toast.makeText(this,"Order Successful !!!", Toast.LENGTH_SHORT).show();
+        managmentCart.removeAllItems(new ChangeNumberItemsListener() {
+            @Override
+            public void change() {
+
+            }
+        });
+
     }
 }
