@@ -3,6 +3,7 @@ package com.example.foodproject.Activity.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,6 +74,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.viewholder> {
         ImageView pic;
         TextView num;
         ConstraintLayout trashBtn;
+        Button checkOutBtn;
         public viewholder(@NonNull View itemView) {
             super(itemView);
             title=itemView.findViewById(R.id.titleTxt);
@@ -82,6 +84,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.viewholder> {
             minusItem=itemView.findViewById(R.id.minusCartBtn);
             num=itemView.findViewById(R.id.numberItemTxt);
             trashBtn=itemView.findViewById(R.id.trashBtn);
+            checkOutBtn=itemView.findViewById(R.id.checkOutBtn);
         }
     }
 }
