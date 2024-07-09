@@ -102,6 +102,9 @@ public class MainActivity extends BaseActivity {
                 if(i == R.id.favorites){
                     startActivity(new Intent(MainActivity.this,ListFoodFavoriteActivity.class));
                 }
+                if(i==R.id.cart){
+                    startActivity(new Intent(MainActivity.this, CartActivity.class));
+                }
             }
         });
 
