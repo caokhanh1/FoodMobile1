@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.foodproject.Activity.Domain.Foods;
+import com.example.foodproject.Activity.Helper.ManagementListFavorite;
 import com.example.foodproject.Activity.Helper.ManagmentCart;
 import com.example.foodproject.databinding.ActivityDetailBinding;
 
@@ -15,6 +16,7 @@ public class DetailActivity extends BaseActivity {
     private Foods object;
     private int num = 1;
      private ManagmentCart managmentCart;
+     private ManagementListFavorite managementListFavorite;
 
 
 
@@ -30,6 +32,7 @@ public class DetailActivity extends BaseActivity {
 
     private void setVariable() {
         managmentCart = new ManagmentCart(this);
+        managementListFavorite = new ManagementListFavorite(this);
         binding.backBtn.setOnClickListener(v->finish());
         Glide.with(this)
                 .load(object.getImagePath())
@@ -60,6 +63,9 @@ public class DetailActivity extends BaseActivity {
         binding.addBtn.setOnClickListener(v -> {
             object.setNumberInCart(num);
             managmentCart.insertFood(object);
+        });
+        binding.faveBtn.setOnClickListener(v -> {
+            managementListFavorite.insertFood(object);
         });
 
 
