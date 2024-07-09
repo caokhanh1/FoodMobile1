@@ -27,7 +27,7 @@ public class DetailActivity extends BaseActivity {
         setVariable();
 
     }
-
+// dfas df asfa
     private void setVariable() {
         managmentCart = new ManagmentCart(this);
         binding.backBtn.setOnClickListener(v->finish());
