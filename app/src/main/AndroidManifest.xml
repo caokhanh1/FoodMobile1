@@ -13,10 +13,16 @@
         android:theme="@style/Theme.FoodProject"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.Activity.CartActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.Activity.ListFoodActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.Activity.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.Activity.BaseActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.Activity.MainActivity"
@@ -30,8 +36,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.Activity.SignupActivity"/>
-         <activity android:name=".Activity.Activity.LoginActivity"/>
+        <activity android:name=".Activity.Activity.SignupActivity" />
+        <activity android:name=".Activity.Activity.LoginActivity" />
     </application>
 
 </manifest>

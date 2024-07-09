@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.ArrayList;
 
@@ -95,6 +96,11 @@ public class MainActivity extends BaseActivity {
 
     private void setVariable() {
         binding.bottomMenu.setItemSelected(R.id.home,true);
+        binding.bottomMenu.setOnItemSelectedListener(i -> {
+            if(i==R.id.cart){
+                startActivity(new Intent(MainActivity.this, CartActivity.class));
+            }
+        });
 
     }
 
