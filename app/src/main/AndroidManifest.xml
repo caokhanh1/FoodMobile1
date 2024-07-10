@@ -13,6 +13,13 @@
         android:theme="@style/Theme.FoodProject"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.Activity.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.Activity.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity android:name=".Activity.Activity.UserProfileActivity" />
+        <activity
             android:name=".Activity.Activity.CartActivity"
             android:exported="false" />
         <activity
