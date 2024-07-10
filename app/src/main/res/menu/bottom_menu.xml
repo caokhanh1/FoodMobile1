@@ -27,7 +27,7 @@
         app:cnb_iconColor="@color/white" />
     <item
         android:id="@+id/map"
-        android:icon="@drawable/btn_4"
+        android:icon="@drawable/map"
         android:title="Map"
         app:cnb_backgroundColor="@color/red"
         app:cnb_iconColor="@color/white" />
