@@ -107,6 +107,9 @@ public class MainActivity extends BaseActivity {
                 }if (i==R.id.profile){
                     startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
                 }
+                if(i==R.id.map){
+                    startActivity(new Intent(MainActivity.this, GoogleMapActivity.class));
+                }
             }
         });
 

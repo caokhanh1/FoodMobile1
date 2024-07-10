@@ -46,4 +46,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-database:20.3.1")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     implementation ("com.github.ismaeldivita:chip-navigation-bar:1.4.0")
+    implementation ("com.google.android.gms:play-services-maps:19.0.0")
+
+
 }

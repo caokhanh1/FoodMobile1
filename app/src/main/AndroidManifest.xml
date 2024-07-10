@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -12,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodProject"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBmZ6Ru3iLLoXpFldPt3fZm6OQ8Zh-HtWI"/>
         <activity
             android:name=".Activity.Activity.ChangePasswordActivity"
             android:exported="false" />
@@ -33,6 +40,9 @@
             android:exported="false" />
         <activity
             android:name=".Activity.Activity.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.Activity.GoogleMapActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.Activity.IntroActivity"
