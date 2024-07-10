@@ -38,7 +38,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        setContentView(R.layout.activity_main);
         auth = FirebaseAuth.getInstance();
         view = findViewById(R.id.nameuser);
         user = auth.getCurrentUser();
@@ -47,11 +46,12 @@ public class MainActivity extends BaseActivity {
             startActivity(intent);
             finish();
         } else {
-            view.setText(user.getEmail());
+            view.setText(user.getDisplayName());
         }
 
         initCategory();
         initBanner();
+
         setVariable();
 
     }
@@ -104,6 +104,8 @@ public class MainActivity extends BaseActivity {
                 }
                 if(i==R.id.cart){
                     startActivity(new Intent(MainActivity.this, CartActivity.class));
+                }if (i==R.id.profile){
+                    startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
                 }
             }
         });

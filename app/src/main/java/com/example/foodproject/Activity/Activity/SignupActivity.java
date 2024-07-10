@@ -26,11 +26,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 
 public class SignupActivity extends AppCompatActivity {
 
     private EditText etName, etEmail, etPassword;
+    EditText etConfirm;
     private ProgressBar progressBar;
     private TextView view;
     private static final String TAG = "SignupActivity";
@@ -38,17 +40,20 @@ public class SignupActivity extends AppCompatActivity {
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         progressBar = findViewById(R.id.progressBar1);
         etName = findViewById(R.id.createname);
         etEmail = findViewById(R.id.createEmail);
         etPassword = findViewById(R.id.createPass);
-        view=findViewById(R.id.textView34);
+        etConfirm = findViewById(R.id.confirmPass);
+
+        view = findViewById(R.id.textView34);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignupActivity.this,LoginActivity.class );
+                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -60,7 +65,7 @@ public class SignupActivity extends AppCompatActivity {
                 String name = etName.getText().toString();
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
-
+                String confirmPassword = etConfirm.getText().toString();
                 if (TextUtils.isEmpty(name)) {
                     Toast.makeText(SignupActivity.this, "Please enter name", Toast.LENGTH_LONG).show();
                     etName.setError("Name is required");
@@ -81,6 +86,9 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "Password should be least at 6 digits", Toast.LENGTH_LONG).show();
                     etPassword.setError("Password to weak");
                     etPassword.requestFocus();
+                } else if (!password.equals(confirmPassword)) {
+                    etConfirm.setError("Confirm password must be same password");
+                    etConfirm.requestFocus();
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
                     SignUpUser(name, email, password);
@@ -98,16 +106,33 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(SignupActivity.this, "User sign up successfull", Toast.LENGTH_LONG).show();
                             FirebaseUser firebaseUser = auth.getCurrentUser();
 
+                            // Cập nhật profile của người dùng
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(name)
+                                    // Các thông tin khác như ảnh đại diện có thể cập nhật tại đây nếu cần
+                                    .build();
+
+                            firebaseUser.updateProfile(profileUpdates)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(SignupActivity.this, "Sign Up Success", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                            // Gửi email xác nhận
                             firebaseUser.sendEmailVerification();
 
-                            Intent intent = new Intent(SignupActivity.this,LoginActivity.class );
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                            // Chuyển về màn hình đăng nhập
+                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
+                            // Xử lý các trường hợp lỗi khi đăng ký
                             try {
                                 throw task.getException();
                             } catch (FirebaseAuthWeakPasswordException e) {
@@ -122,11 +147,11 @@ public class SignupActivity extends AppCompatActivity {
                             } catch (Exception e) {
                                 Log.e(TAG, e.getMessage());
                                 Toast.makeText(SignupActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                                progressBar.setVisibility(View.GONE);
                             }
                         }
-
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
     }
+
 }
