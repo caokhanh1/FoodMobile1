@@ -36,7 +36,7 @@ public class UserProfileActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserProfileActivity.this, ChangePasswordActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                 startActivity(intent);
                 finish();
 
@@ -48,6 +48,7 @@ public class UserProfileActivity extends BaseActivity {
                 auth.signOut();
                 Toast.makeText(UserProfileActivity.this, "You are logged out", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(UserProfileActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             }
