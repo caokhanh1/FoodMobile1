@@ -1,5 +1,6 @@
 package com.example.foodproject.Activity.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.foodproject.Activity.Activity.DetailActivity;
 import com.example.foodproject.Activity.Domain.Foods;
 import com.example.foodproject.Activity.Helper.ChangeNumberItemsListener;
 import com.example.foodproject.Activity.Helper.ManagementListFavorite;
@@ -47,6 +49,13 @@ public class ListFavoriteAdapter extends RecyclerView.Adapter<ListFavoriteAdapte
                 .load(list.get(position).getImagePath())
                 .transform(new CenterCrop(), new RoundedCorners(30))
                 .into(holder.pic);
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
+            intent.putExtra("object",list.get(position));
+            holder.itemView.getContext().startActivity(intent);
+        });
+
+
         holder.trashBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
