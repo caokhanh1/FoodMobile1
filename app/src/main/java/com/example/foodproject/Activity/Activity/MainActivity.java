@@ -2,6 +2,7 @@ package com.example.foodproject.Activity.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class MainActivity extends BaseActivity {
     FirebaseUser user;
     TextView view;
     ActivityMainBinding binding;
+    private Handler sliderHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,6 @@ public class MainActivity extends BaseActivity {
         initBanner();
         setupSearch();
         setVariable();
-
     }
     private void searchFoodsByTitle(String titleKeyword) {
         DatabaseReference myRef = database.getReference("Foods");
@@ -118,12 +119,12 @@ public class MainActivity extends BaseActivity {
     private void initBanner() {
         DatabaseReference myRef = database.getReference("Banners");
         binding.progressBarBanner.setVisibility(View.VISIBLE);
-        ArrayList<SliderItems> items=new ArrayList<>();
+        ArrayList<SliderItems> items = new ArrayList<>();
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for(DataSnapshot issue:snapshot.getChildren()){
+                if (snapshot.exists()) {
+                    for (DataSnapshot issue : snapshot.getChildren()) {
                         items.add(issue.getValue(SliderItems.class));
                     }
                     banners(items);
@@ -136,37 +137,48 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-
     }
 
-    private void banners(ArrayList<SliderItems> items){
-        binding.viewpager2.setAdapter(new SliderAdapter(items,binding.viewpager2));
+    private void banners(ArrayList<SliderItems> items) {
+        binding.viewpager2.setAdapter(new SliderAdapter(items, binding.viewpager2));
         binding.viewpager2.setClipChildren(false);
         binding.viewpager2.setClipToPadding(false);
         binding.viewpager2.setOffscreenPageLimit(3);
         binding.viewpager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
 
-        CompositePageTransformer compositePageTransformer=new CompositePageTransformer();
+        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
         compositePageTransformer.addTransformer(new MarginPageTransformer(40));
-
         binding.viewpager2.setPageTransformer(compositePageTransformer);
 
+        // Start the auto-slide
+        sliderHandler.postDelayed(sliderRunnable, 10000);
     }
 
+    private Runnable sliderRunnable = new Runnable() {
+        @Override
+        public void run() {
+            int currentItem = binding.viewpager2.getCurrentItem();
+            int itemCount = binding.viewpager2.getAdapter().getItemCount();
+            binding.viewpager2.setCurrentItem((currentItem + 1) % itemCount);
+            sliderHandler.postDelayed(this, 1000);
+        }
+    };
+
     private void setVariable() {
-        binding.bottomMenu.setItemSelected(R.id.home,true);
+        binding.bottomMenu.setItemSelected(R.id.home, true);
         binding.bottomMenu.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int i) {
-                if(i == R.id.favorites){
-                    startActivity(new Intent(MainActivity.this,ListFoodFavoriteActivity.class));
+                if (i == R.id.favorites) {
+                    startActivity(new Intent(MainActivity.this, ListFoodFavoriteActivity.class));
                 }
-                if(i==R.id.cart){
+                if (i == R.id.cart) {
                     startActivity(new Intent(MainActivity.this, CartActivity.class));
-                }if (i==R.id.profile){
+                }
+                if (i == R.id.profile) {
                     startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
                 }
-                if(i==R.id.map){
+                if (i == R.id.map) {
                     startActivity(new Intent(MainActivity.this, GoogleMapActivity.class));
                 }
             }
@@ -184,11 +196,13 @@ public class MainActivity extends BaseActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     for (DataSnapshot issue : snapshot.getChildren()) {
-                          list.add(issue.getValue(Category.class));
+                        list.add(issue.getValue(Category.class));
                     }
-                    if (list.size()>0){
-                     binding.categoryView.setLayoutManager(new GridLayoutManager(MainActivity.this,3));
-                     binding.categoryView.setAdapter(new CategoryAdapter(list));
+
+                    if (list.size() > 0) {
+                        binding.categoryView.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));
+                        binding.categoryView.setAdapter(new CategoryAdapter(list));
+
                     }
                     binding.progressBarCategory.setVisibility(View.GONE);
                 }
@@ -199,5 +213,12 @@ public class MainActivity extends BaseActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove callbacks to avoid memory leaks
+        sliderHandler.removeCallbacks(sliderRunnable);
     }
 }

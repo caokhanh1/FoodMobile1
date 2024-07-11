@@ -38,7 +38,7 @@ public class ListFoodFavoriteActivity extends BaseActivity {
     private void initCartList() {
         if(managementListFavorite.getListFavorite().isEmpty()){
             binding.emptyTxt.setVisibility(View.VISIBLE);
-            binding.scroviewFavorite.setVisibility(View.GONE);
+            binding.scroviewFavorite.setVisibility(View.VISIBLE);
         }else{
             binding.emptyTxt.setVisibility(View.GONE);
             binding.scroviewFavorite.setVisibility(View.VISIBLE);
