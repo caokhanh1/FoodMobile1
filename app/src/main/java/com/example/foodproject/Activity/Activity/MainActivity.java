@@ -3,17 +3,22 @@ package com.example.foodproject.Activity.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 
 import com.example.foodproject.Activity.Adapter.CategoryAdapter;
+import com.example.foodproject.Activity.Adapter.FoodListAdapter;
 import com.example.foodproject.Activity.Adapter.SliderAdapter;
 import com.example.foodproject.Activity.Domain.Category;
+import com.example.foodproject.Activity.Domain.Foods;
 import com.example.foodproject.Activity.Domain.SliderItems;
 import com.example.foodproject.R;
 import com.example.foodproject.databinding.ActivityMainBinding;
@@ -24,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import android.view.KeyEvent;
 
 import java.util.ArrayList;
 
@@ -51,9 +57,62 @@ public class MainActivity extends BaseActivity {
 
         initCategory();
         initBanner();
-
+        setupSearch();
         setVariable();
 
+    }
+    private void searchFoodsByTitle(String titleKeyword) {
+        DatabaseReference myRef = database.getReference("Foods");
+        binding.progressBarCategory.setVisibility(View.VISIBLE);
+        ArrayList<Foods> list = new ArrayList<>();
+
+        myRef.orderByChild("Title").startAt(titleKeyword).endAt(titleKeyword + "\uf8ff")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            list.clear();
+                            for (DataSnapshot issue : snapshot.getChildren()) {
+                                list.add(issue.getValue(Foods.class));
+                            }
+                            if (list.size() > 0) {
+                                binding.categoryView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                                binding.categoryView.setAdapter(new FoodListAdapter(list));
+                            } else {
+                                // Nếu không tìm thấy thực phẩm nào
+                                // Hiển thị thông báo hoặc thực hiện hành động khác
+                                Toast.makeText(MainActivity.this, "No foods found with the given title.", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            // Nếu không có dữ liệu nào
+                            Toast.makeText(MainActivity.this, "No foods available.", Toast.LENGTH_SHORT).show();
+                        }
+                        binding.progressBarCategory.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Xử lý lỗi nếu có
+                        Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        binding.progressBarCategory.setVisibility(View.GONE);
+                    }
+                });
+    }
+
+    // Đặt lắng nghe sự kiện nhập vào dữ liệu Title và gọi phương thức searchFoodsByTitle khi người dùng nhấn Enter
+    private void setupSearch() {
+        binding.searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                String titleKeyword = v.getText().toString().trim();
+                if (!titleKeyword.isEmpty()) {
+                    searchFoodsByTitle(titleKeyword);
+                    return true;  // Xử lý hành động tìm kiếm
+                } else {
+                    Toast.makeText(MainActivity.this, "Please enter a title to search.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            return false;  // Không xử lý hành động tìm kiếm
+        });
     }
 
     private void initBanner() {
