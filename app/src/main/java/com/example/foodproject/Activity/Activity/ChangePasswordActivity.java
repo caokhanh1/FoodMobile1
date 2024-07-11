@@ -1,5 +1,6 @@
 package com.example.foodproject.Activity.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -22,11 +23,11 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-    private EditText verifyEmailEditText, newPasswordEditText, confirmPasswordEditText;
-    private Button verifyEmailButton, changePasswordButton;
-    private LinearLayout verifyEmailLayout, changePasswordLayout;
-    private FirebaseAuth auth;
-    private FirebaseUser user;
+     EditText verifyEmailEditText, newPasswordEditText, confirmPasswordEditText;
+     Button verifyEmailButton, changePasswordButton,exitButtonFromVerify,exitButtonFromChange;
+     LinearLayout verifyEmailLayout, changePasswordLayout;
+     FirebaseAuth auth;
+     FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,25 @@ public class ChangePasswordActivity extends AppCompatActivity {
         changePasswordButton = findViewById(R.id.changePasswordButton);
         verifyEmailLayout = findViewById(R.id.verifyEmailLayout);
         changePasswordLayout = findViewById(R.id.changePasswordLayout);
+        exitButtonFromVerify=findViewById(R.id.exitButtonFromVerify);
+        exitButtonFromChange=findViewById(R.id.exitButtonFromChange);
 
+        exitButtonFromVerify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        exitButtonFromChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         verifyEmailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
