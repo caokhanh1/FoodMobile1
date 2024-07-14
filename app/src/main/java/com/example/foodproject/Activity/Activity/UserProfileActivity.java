@@ -1,6 +1,7 @@
 package com.example.foodproject.Activity.Activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -9,12 +10,14 @@ import com.example.foodproject.R;
 import com.example.foodproject.databinding.ActivityUserProfileBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfileActivity extends BaseActivity {
     private FirebaseAuth auth;
     private FirebaseUser user;
     private ActivityUserProfileBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +26,10 @@ public class UserProfileActivity extends BaseActivity {
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+        Uri uri = user.getPhotoUrl();
+
+
+
 
         if (user != null) {
             String displayName = user.getDisplayName();
@@ -30,18 +37,20 @@ public class UserProfileActivity extends BaseActivity {
                 binding.name.setText(displayName);
             } else {
                 binding.name.setText("No Name");
+
             }
+            Picasso.get().load(uri).into(binding.avatar);
         }
+
         binding.changepass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserProfileActivity.this, ChangePasswordActivity.class);
-
                 startActivity(intent);
                 finish();
-
             }
         });
+
         binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +62,16 @@ public class UserProfileActivity extends BaseActivity {
                 finish();
             }
         });
+
+        binding.updateImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfileActivity.this, UploadProfileActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         binding.backMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.Activity.UserProfileActivity">
+
+    <TextView
+        android:id="@+id/upload_profile_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Update Image"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/new_update_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/upload_profile_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:contentDescription="Image to upload"
+        android:scaleType="centerCrop"
+        android:background="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/button_choose_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/new_update_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Choose Image" />
+
+    <Button
+        android:id="@+id/button_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_choose_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Upload Image" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_upload"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
+
+</RelativeLayout>

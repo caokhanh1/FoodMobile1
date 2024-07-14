@@ -1,6 +1,8 @@
 package com.example.foodproject.Activity.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -43,6 +46,7 @@ public class MainActivity extends BaseActivity {
         auth = FirebaseAuth.getInstance();
         view = findViewById(R.id.nameuser);
         user = auth.getCurrentUser();
+        Uri uri=user.getPhotoUrl();
         if (user == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -51,9 +55,10 @@ public class MainActivity extends BaseActivity {
             view.setText(user.getDisplayName());
         }
 
+        Picasso.get().load(uri).into(binding.imageView5);
+
         initCategory();
         initBanner();
-
         setVariable();
     }
 
@@ -124,7 +129,6 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     private void initCategory() {
@@ -143,7 +147,6 @@ public class MainActivity extends BaseActivity {
                     if (list.size() > 0) {
                         binding.categoryView.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));
                         binding.categoryView.setAdapter(new CategoryAdapter(list));
-
                     }
                     binding.progressBarCategory.setVisibility(View.GONE);
                 }
