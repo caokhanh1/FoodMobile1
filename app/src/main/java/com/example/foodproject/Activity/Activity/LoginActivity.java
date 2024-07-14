@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
                                 email.setError("User dose not exist");
                                 email.requestFocus();
                             } catch (FirebaseAuthInvalidCredentialsException e) {
-                                email.setError("Password false");
+                                email.setError("Password is incorrect");
                                 email.requestFocus();
                             } catch (Exception e) {
                                 Log.e(TAG, e.getMessage());
