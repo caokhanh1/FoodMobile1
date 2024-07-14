@@ -98,7 +98,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String newPassword = newPasswordEditText.getText().toString().trim();
                 String confirmPassword = confirmPasswordEditText.getText().toString().trim();
-
+                String currentPassword = currentPasswordEditText.getText().toString().trim();
                 if (TextUtils.isEmpty(newPassword)) {
                     newPasswordEditText.setError("New Password is required");
                     newPasswordEditText.requestFocus();
@@ -109,9 +109,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     newPasswordEditText.requestFocus();
                     return;
                 }
+
                 if (!newPassword.equals(confirmPassword)) {
                     confirmPasswordEditText.setError("Passwords do not match");
                     confirmPasswordEditText.requestFocus();
+                    return;
+                }
+                if (newPassword.equals(currentPassword)) {
+                    newPasswordEditText.setError("New password cannot be the same as the current password");
+                    newPasswordEditText.requestFocus();
                     return;
                 }
                 changePassword(newPassword);
