@@ -1,9 +1,9 @@
 package com.example.foodproject.Activity.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +23,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-     EditText verifyEmailEditText, newPasswordEditText, confirmPasswordEditText;
-     Button verifyEmailButton, changePasswordButton,exitButtonFromVerify,exitButtonFromChange;
-     LinearLayout verifyEmailLayout, changePasswordLayout;
-     FirebaseAuth auth;
-     FirebaseUser user;
+    EditText currentPasswordEditText, newPasswordEditText, confirmPasswordEditText;
+    Button verifyCurrentPasswordButton, changePasswordButton, exitButtonFromVerify, exitButtonFromChange;
+    LinearLayout verifyCurrentPassTitle, changePasswordLayout;
+    FirebaseAuth auth;
+    FirebaseUser user;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,15 +40,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
         user = auth.getCurrentUser();
 
         // Liên kết các view với các biến
-        verifyEmailEditText = findViewById(R.id.verifyEmailEditText);
+        currentPasswordEditText = findViewById(R.id.currentPas);
         newPasswordEditText = findViewById(R.id.newPasswordEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
-        verifyEmailButton = findViewById(R.id.verifyEmailButton);
+        verifyCurrentPasswordButton = findViewById(R.id.verifyCurrentPas);
         changePasswordButton = findViewById(R.id.changePasswordButton);
-        verifyEmailLayout = findViewById(R.id.verifyEmailLayout);
+        verifyCurrentPassTitle = findViewById(R.id.verifyChangePassLayout);
         changePasswordLayout = findViewById(R.id.changePasswordLayout);
-        exitButtonFromVerify=findViewById(R.id.exitButtonFromVerify);
-        exitButtonFromChange=findViewById(R.id.exitButtonFromChange);
+        exitButtonFromVerify = findViewById(R.id.exitButtonFromVerify);
+        exitButtonFromChange = findViewById(R.id.exitButtonFromChange);
 
         exitButtonFromVerify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +58,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         exitButtonFromChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,25 +67,29 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 finish();
             }
         });
-        verifyEmailButton.setOnClickListener(new View.OnClickListener() {
+
+        verifyCurrentPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = verifyEmailEditText.getText().toString().trim();
-                if (TextUtils.isEmpty(email)) {
-                    verifyEmailEditText.setError("Email is required");
-                    verifyEmailEditText.requestFocus();
+                String currentPassword = currentPasswordEditText.getText().toString().trim();
+                if (TextUtils.isEmpty(currentPassword)) {
+                    currentPasswordEditText.setError("Current password is required");
+                    currentPasswordEditText.requestFocus();
                     return;
                 }
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    verifyEmailEditText.setError("Valid email is required");
-                    verifyEmailEditText.requestFocus();
-                    return;
-                }
-                if (user != null && email.equals(user.getEmail())) {
-                    verifyEmail();
-                } else {
-                    Toast.makeText(ChangePasswordActivity.this, "Email does not match", Toast.LENGTH_SHORT).show();
-                }
+
+                AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
+                user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            verifyCurrentPassTitle.setVisibility(View.GONE);
+                            changePasswordLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            Toast.makeText(ChangePasswordActivity.this, "Current password is incorrect", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 
@@ -113,18 +119,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
         });
     }
 
-    private void verifyEmail() {
-        // Hiển thị phần đổi mật khẩu
-        verifyEmailLayout.setVisibility(View.GONE);
-        changePasswordLayout.setVisibility(View.VISIBLE);
-    }
-
     private void changePassword(String newPassword) {
         user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(ChangePasswordActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
+                    startActivity(intent);
                     finish();
                 } else {
                     Toast.makeText(ChangePasswordActivity.this, "Failed to change password", Toast.LENGTH_SHORT).show();
