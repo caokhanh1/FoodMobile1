@@ -1,7 +1,6 @@
 package com.example.foodproject.Activity.Activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +45,7 @@ public class MainActivity extends BaseActivity {
         auth = FirebaseAuth.getInstance();
         view = findViewById(R.id.nameuser);
         user = auth.getCurrentUser();
+
         Uri uri=user.getPhotoUrl();
         if (user == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -53,9 +53,10 @@ public class MainActivity extends BaseActivity {
             finish();
         } else {
             view.setText(user.getDisplayName());
+            Picasso.get().load(uri).into(binding.imageView5);
         }
 
-        Picasso.get().load(uri).into(binding.imageView5);
+
 
         initCategory();
         initBanner();
