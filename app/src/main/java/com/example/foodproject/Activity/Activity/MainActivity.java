@@ -1,11 +1,13 @@
 package com.example.foodproject.Activity.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,58 +68,64 @@ public class MainActivity extends BaseActivity {
         initBanner();
         setupSearch();
         setVariable();
+
+        binding.backBtn.setOnClickListener(v -> {
+            binding.searchEditText.setText("");
+            initCategory();
+            binding.backBtn.setVisibility(View.GONE);
+        });
+    }
+    private void setupSearch() {
+        binding.searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                String titleKeyword = v.getText().toString().trim();
+                if (!titleKeyword.isEmpty()) {
+                    searchFoodsByTitle(titleKeyword);
+                    binding.backBtn.setVisibility(View.VISIBLE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    return true;
+                } else {
+                    Toast.makeText(MainActivity.this, "Please enter a title to search.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            return false;
+        });
     }
     private void searchFoodsByTitle(String titleKeyword) {
         DatabaseReference myRef = database.getReference("Foods");
         binding.progressBarCategory.setVisibility(View.VISIBLE);
         ArrayList<Foods> list = new ArrayList<>();
 
-        myRef.orderByChild("Title").startAt(titleKeyword).endAt(titleKeyword + "\uf8ff")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            list.clear();
-                            for (DataSnapshot issue : snapshot.getChildren()) {
-                                list.add(issue.getValue(Foods.class));
-                            }
-                            if (list.size() > 0) {
-                                binding.categoryView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                                binding.categoryView.setAdapter(new FoodListAdapter(list));
-                            } else {
-                                // Nếu không tìm thấy thực phẩm nào
-                                // Hiển thị thông báo hoặc thực hiện hành động khác
-                                Toast.makeText(MainActivity.this, "No foods found with the given title.", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            // Nếu không có dữ liệu nào
-                            Toast.makeText(MainActivity.this, "No foods available.", Toast.LENGTH_SHORT).show();
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    list.clear();
+                    for (DataSnapshot issue : snapshot.getChildren()) {
+                        Foods food = issue.getValue(Foods.class);
+                        if (food != null && food.getTitle() != null && food.getTitle().toLowerCase().contains(titleKeyword.toLowerCase())) {
+                            list.add(food);
                         }
-                        binding.progressBarCategory.setVisibility(View.GONE);
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Xử lý lỗi nếu có
-                        Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                        binding.progressBarCategory.setVisibility(View.GONE);
+                    if (list.size() > 0) {
+                        binding.categoryView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                        binding.categoryView.setAdapter(new FoodListAdapter(list));
+                    } else {
+                        Toast.makeText(MainActivity.this, "No foods found with the given title.", Toast.LENGTH_SHORT).show();
                     }
-                });
-    }
-
-    // Đặt lắng nghe sự kiện nhập vào dữ liệu Title và gọi phương thức searchFoodsByTitle khi người dùng nhấn Enter
-    private void setupSearch() {
-        binding.searchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
-                String titleKeyword = v.getText().toString().trim();
-                if (!titleKeyword.isEmpty()) {
-                    searchFoodsByTitle(titleKeyword);
-                    return true;  // Xử lý hành động tìm kiếm
                 } else {
-                    Toast.makeText(MainActivity.this, "Please enter a title to search.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "No foods available.", Toast.LENGTH_SHORT).show();
                 }
+                binding.progressBarCategory.setVisibility(View.GONE);
             }
-            return false;  // Không xử lý hành động tìm kiếm
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.progressBarCategory.setVisibility(View.GONE);
+            }
         });
     }
 
@@ -200,22 +208,31 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    list.clear();
                     for (DataSnapshot issue : snapshot.getChildren()) {
-                        list.add(issue.getValue(Category.class));
+                        Category category = issue.getValue(Category.class);
+                        if (category != null) {
+                            list.add(category);
+                        }
                     }
-
                     if (list.size() > 0) {
                         binding.categoryView.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));
                         binding.categoryView.setAdapter(new CategoryAdapter(list));
 
+                    } else {
+                        Toast.makeText(MainActivity.this, "No categories found.", Toast.LENGTH_SHORT).show();
                     }
-                    binding.progressBarCategory.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(MainActivity.this, "No categories available.", Toast.LENGTH_SHORT).show();
                 }
+                binding.backBtn.setVisibility(View.GONE);
+                binding.progressBarCategory.setVisibility(View.GONE);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(MainActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                binding.progressBarCategory.setVisibility(View.GONE);
             }
         });
     }
