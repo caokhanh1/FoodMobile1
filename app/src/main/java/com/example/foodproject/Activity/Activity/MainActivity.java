@@ -1,6 +1,7 @@
 package com.example.foodproject.Activity.Activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -30,6 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.squareup.picasso.Picasso;
+
 import android.view.KeyEvent;
 
 import java.util.ArrayList;
@@ -49,6 +52,8 @@ public class MainActivity extends BaseActivity {
         auth = FirebaseAuth.getInstance();
         view = findViewById(R.id.nameuser);
         user = auth.getCurrentUser();
+        Uri uri = user.getPhotoUrl();
+        Picasso.get().load(uri).into(binding.imageView5);
         if (user == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);

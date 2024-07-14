@@ -17,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodProject"
         tools:targetApi="31">
+        <activity
+            android:name=".Activity.Activity.UpdateImageActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBmZ6Ru3iLLoXpFldPt3fZm6OQ8Zh-HtWI" />
