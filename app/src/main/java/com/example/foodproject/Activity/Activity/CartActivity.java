@@ -38,6 +38,7 @@ public class CartActivity extends BaseActivity {
     private void initCartList() {
         if (managmentCart.getListCart().isEmpty()){
             binding.emptyTxt.setVisibility(View.VISIBLE);
+            binding.backBtn1.setVisibility(View.VISIBLE);
             binding.scrollViewCart.setVisibility(View.GONE);
         }else {
             binding.emptyTxt.setVisibility(View.GONE);
@@ -45,6 +46,7 @@ public class CartActivity extends BaseActivity {
         }
         binding.cartView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
         binding.cartView.setAdapter(new CartAdapter(managmentCart.getListCart(), managmentCart, () -> calculateCart()));
+
     }
 
     private void calculateCart() {
@@ -64,6 +66,7 @@ public class CartActivity extends BaseActivity {
 
     private void setVariable() {
         binding.backBtn.setOnClickListener(v -> startActivity(new Intent(CartActivity.this, MainActivity.class)));
+        binding.backBtn1.setOnClickListener(v -> startActivity(new Intent(CartActivity.this, MainActivity.class)));
         binding.checkOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

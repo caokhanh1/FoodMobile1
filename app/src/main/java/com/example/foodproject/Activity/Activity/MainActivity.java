@@ -178,26 +178,26 @@ public class MainActivity extends BaseActivity {
     };
 
     private void setVariable() {
-        binding.bottomMenu.setItemSelected(R.id.home, true);
+        binding.bottomMenu.setItemSelected(R.id.home,true);
         binding.bottomMenu.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int i) {
-                if (i == R.id.favorites) {
-                    startActivity(new Intent(MainActivity.this, ListFoodFavoriteActivity.class));
+                if(i == R.id.favorites){
+                    startActivity(new Intent(MainActivity.this,ListFoodFavoriteActivity.class));
                 }
-                if (i == R.id.cart) {
+                if(i==R.id.cart){
                     startActivity(new Intent(MainActivity.this, CartActivity.class));
-                }
-                if (i == R.id.profile) {
+                }if (i==R.id.profile){
                     startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
                 }
-                if (i == R.id.map) {
+                if(i==R.id.map){
                     startActivity(new Intent(MainActivity.this, GoogleMapActivity.class));
                 }
             }
         });
 
     }
+
 
     private void initCategory() {
         DatabaseReference myRef = database.getReference("Category");
