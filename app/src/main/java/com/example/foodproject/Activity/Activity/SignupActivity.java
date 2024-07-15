@@ -111,7 +111,6 @@ public class SignupActivity extends AppCompatActivity {
                             // Cập nhật profile của người dùng
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(name)
-                                    // Các thông tin khác như ảnh đại diện có thể cập nhật tại đây nếu cần
                                     .build();
 
                             firebaseUser.updateProfile(profileUpdates)
